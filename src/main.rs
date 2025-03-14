@@ -15,13 +15,9 @@ fn App() -> impl IntoView {
             on:click=move |_| {
                 *set_count.write() += 1;
             }
+            class=(["button-20", "rounded"], move || count.get() % 2 == 1)
         >
-            "Click me: "
-            {count}
+            "Click me"
         </button>
-        <p>
-            "Double count: "
-            {move || count.get() * 2}
-        </p>
     }
 }
