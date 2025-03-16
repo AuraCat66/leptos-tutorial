@@ -16,17 +16,29 @@ fn App() -> impl IntoView {
     view! {
         <div inner_html=html />
         <button
+            class="button rounded"
             on:click=move |_| {
-                *set_count.write() += 10;
+                set_count.update(|n| *n += 1);
             }
-            style="position: absolute"
-            style:left=move || format!("{}px", count.get() + 175)
-            style:max-width="400px"
-            style=("--columns", move || count.get().to_string())
         >
-            "Click to move"
+            "Click me"
         </button>
-        <progress max="50" value=double_count />
-        <p>"Double Count: " {double_count}</p>
+        <ProgressBar progress=count />
+        <ProgressBar progress=Signal::derive(double_count) />
+    }
+}
+
+#[component]
+fn ProgressBar(
+    /// The maximum value of the progress bar
+    #[prop(default = 100)]
+    max: u16,
+    /// How much progress should be displayed.
+    #[prop(into)]
+    progress: Signal<i32>,
+) -> impl IntoView {
+    view! {
+        <progress max=max value=progress />
+        <br />
     }
 }
